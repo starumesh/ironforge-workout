@@ -20,6 +20,7 @@ interface Exercise {
   formTips: string[];
   youtube: string;
   alternatives: Alternative[];
+  restBetweenSets: number;
 }
 
 interface WorkoutSection {
@@ -203,6 +204,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Dumbbell Bench Press', youtube: yt('dumbbell bench press') },
               { name: 'Machine Chest Press', youtube: yt('machine chest press') },
             ],
+            restBetweenSets: 150,
           },
           {
             name: 'Incline Dumbbell Press',
@@ -214,6 +216,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Incline Barbell Press', youtube: yt('incline barbell press') },
               { name: 'Incline Machine Press', youtube: yt('incline machine press') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Cable Fly',
@@ -225,6 +228,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Dumbbell Fly', youtube: yt('dumbbell chest fly') },
               { name: 'Pec Deck Machine', youtube: yt('pec deck machine') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -241,6 +245,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Straight Bar Pushdown', youtube: yt('straight bar pushdown') },
               { name: 'V-Bar Pushdown', youtube: yt('v-bar pushdown triceps') },
             ],
+            restBetweenSets: 60,
           },
           {
             name: 'Overhead Dumbbell Extension',
@@ -252,6 +257,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Skull Crushers', youtube: yt('skull crushers barbell') },
               { name: 'Overhead Cable Extension', youtube: yt('overhead cable tricep extension') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -268,6 +274,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Captain\'s Chair Leg Raise', youtube: yt('captains chair leg raise') },
               { name: 'Lying Leg Raises', youtube: yt('lying leg raises') },
             ],
+            restBetweenSets: 45,
           },
           {
             name: 'Plank',
@@ -279,6 +286,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Dead Bug', youtube: yt('dead bug exercise') },
               { name: 'Ab Wheel Rollout', youtube: yt('ab wheel rollout') },
             ],
+            restBetweenSets: 45,
           },
         ],
       },
@@ -326,6 +334,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Pull-Ups', youtube: yt('pull-ups proper form') },
               { name: 'Assisted Pull-Ups', youtube: yt('assisted pull-ups') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Seated Cable Row',
@@ -337,6 +346,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'One-Arm Dumbbell Row', youtube: yt('one arm dumbbell row') },
               { name: 'Barbell Row', youtube: yt('barbell row') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Pull-Ups (or Assisted)',
@@ -348,6 +358,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Machine Assisted Pull-Up', youtube: yt('machine assisted pull-up') },
               { name: 'Negative Pull-Ups', youtube: yt('negative pull-ups') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Face Pulls',
@@ -359,6 +370,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Rear Delt Fly (Dumbbell)', youtube: yt('rear delt fly dumbbell') },
               { name: 'Reverse Pec Deck', youtube: yt('reverse pec deck') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -375,6 +387,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'EZ-Bar Curl', youtube: yt('ez bar curl') },
               { name: 'Dumbbell Curl', youtube: yt('standing dumbbell curl') },
             ],
+            restBetweenSets: 60,
           },
           {
             name: 'Dumbbell Hammer Curl',
@@ -386,6 +399,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Cable Rope Hammer Curl', youtube: yt('cable rope hammer curl') },
               { name: 'Cross-Body Hammer Curl', youtube: yt('cross body hammer curl') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -433,6 +447,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Goblet Squat', youtube: yt('goblet squat') },
               { name: 'Smith Machine Squat', youtube: yt('smith machine squat') },
             ],
+            restBetweenSets: 150,
           },
           {
             name: 'Leg Press',
@@ -444,6 +459,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Hack Squat', youtube: yt('hack squat machine') },
               { name: 'Bulgarian Split Squat', youtube: yt('bulgarian split squat') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Walking Lunges',
@@ -455,6 +471,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Reverse Lunges', youtube: yt('reverse lunges') },
               { name: 'Step-Ups', youtube: yt('step ups dumbbell') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Leg Curl (Hamstring Focus)',
@@ -466,6 +483,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Romanian Deadlift', youtube: yt('romanian deadlift') },
               { name: 'Nordic Hamstring Curl', youtube: yt('nordic hamstring curl') },
             ],
+            restBetweenSets: 60,
           },
           {
             name: 'Standing Calf Raises',
@@ -477,6 +495,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Seated Calf Raises', youtube: yt('seated calf raises') },
               { name: 'Single-Leg Calf Raises', youtube: yt('single leg calf raises') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -493,6 +512,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Weighted Crunch', youtube: yt('weighted crunch') },
               { name: 'Decline Sit-Up', youtube: yt('decline sit-up') },
             ],
+            restBetweenSets: 45,
           },
           {
             name: 'Side Plank',
@@ -504,6 +524,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Russian Twist', youtube: yt('russian twist') },
               { name: 'Pallof Press', youtube: yt('pallof press') },
             ],
+            restBetweenSets: 45,
           },
         ],
       },
@@ -551,6 +572,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Barbell Overhead Press', youtube: yt('barbell overhead press') },
               { name: 'Arnold Press', youtube: yt('arnold press') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Lateral Raise',
@@ -562,6 +584,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Cable Lateral Raise', youtube: yt('cable lateral raise') },
               { name: 'Machine Lateral Raise', youtube: yt('machine lateral raise') },
             ],
+            restBetweenSets: 60,
           },
           {
             name: 'Rear Delt Fly',
@@ -573,6 +596,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Reverse Pec Deck', youtube: yt('reverse pec deck') },
               { name: 'Cable Reverse Fly', youtube: yt('cable reverse fly') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -589,6 +613,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Dips (Tricep Focus)', youtube: yt('tricep dips') },
               { name: 'Diamond Push-Ups', youtube: yt('diamond push-ups') },
             ],
+            restBetweenSets: 150,
           },
           {
             name: 'Preacher Curl',
@@ -600,6 +625,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Concentration Curl', youtube: yt('concentration curl') },
               { name: 'Spider Curl', youtube: yt('spider curl') },
             ],
+            restBetweenSets: 60,
           },
           {
             name: 'Cable Tricep Kickbacks',
@@ -611,6 +637,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Dumbbell Kickback', youtube: yt('dumbbell tricep kickback') },
               { name: 'Overhead Cable Extension', youtube: yt('overhead cable extension') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -627,6 +654,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Hanging Knee Raises', youtube: yt('hanging knee raises') },
               { name: 'Lying Leg Raises', youtube: yt('lying leg raises') },
             ],
+            restBetweenSets: 45,
           },
           {
             name: 'Neck Curls (plate)',
@@ -638,6 +666,7 @@ const splitRoutine: WorkoutDay[] = [
               { name: 'Neck Isometric Holds', youtube: yt('neck isometric exercises') },
               { name: '4-Way Neck (manual resistance)', youtube: yt('4 way neck exercise') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -692,6 +721,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Dumbbell Bench Press', youtube: yt('dumbbell bench press') },
               { name: 'Floor Press', youtube: yt('floor press barbell') },
             ],
+            restBetweenSets: 150,
           },
           {
             name: 'Incline Dumbbell Press',
@@ -703,6 +733,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Incline Barbell Press', youtube: yt('incline barbell press') },
               { name: 'Landmine Press', youtube: yt('landmine press') },
             ],
+            restBetweenSets: 90,
           },
         ],
       },
@@ -719,6 +750,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Barbell OHP', youtube: yt('standing barbell overhead press') },
               { name: 'Machine Shoulder Press', youtube: yt('machine shoulder press') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Lateral Raise',
@@ -730,6 +762,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Cable Lateral Raise', youtube: yt('cable lateral raise') },
               { name: 'Machine Lateral Raise', youtube: yt('machine lateral raise') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -746,6 +779,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Straight Bar Pushdown', youtube: yt('straight bar pushdown') },
               { name: 'Dips', youtube: yt('tricep dips') },
             ],
+            restBetweenSets: 60,
           },
           {
             name: 'Overhead Dumbbell Extension',
@@ -757,6 +791,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Skull Crushers', youtube: yt('skull crushers') },
               { name: 'Overhead Cable Extension', youtube: yt('overhead cable extension') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -804,6 +839,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Pendlay Row', youtube: yt('pendlay row') },
               { name: 'T-Bar Row', youtube: yt('t-bar row') },
             ],
+            restBetweenSets: 150,
           },
           {
             name: 'Lat Pulldown',
@@ -815,6 +851,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Pull-Ups', youtube: yt('pull-ups') },
               { name: 'Close-Grip Pulldown', youtube: yt('close grip lat pulldown') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Seated Cable Row',
@@ -826,6 +863,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'One-Arm Dumbbell Row', youtube: yt('one arm dumbbell row') },
               { name: 'Chest-Supported Row', youtube: yt('chest supported row') },
             ],
+            restBetweenSets: 90,
           },
         ],
       },
@@ -842,6 +880,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Reverse Pec Deck', youtube: yt('reverse pec deck') },
               { name: 'Bent-Over Rear Delt Fly', youtube: yt('bent over rear delt fly') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -858,6 +897,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'EZ-Bar Curl', youtube: yt('ez bar curl') },
               { name: 'Dumbbell Curl', youtube: yt('dumbbell curl') },
             ],
+            restBetweenSets: 60,
           },
           {
             name: 'Incline Dumbbell Curl',
@@ -869,6 +909,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Hammer Curl', youtube: yt('hammer curl') },
               { name: 'Cable Curl', youtube: yt('cable curl') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -916,6 +957,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Front Squat', youtube: yt('front squat') },
               { name: 'Leg Press', youtube: yt('leg press') },
             ],
+            restBetweenSets: 150,
           },
           {
             name: 'Bulgarian Split Squat',
@@ -927,6 +969,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Walking Lunges', youtube: yt('walking lunges') },
               { name: 'Step-Ups', youtube: yt('dumbbell step ups') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Leg Extension',
@@ -938,6 +981,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Sissy Squat', youtube: yt('sissy squat') },
               { name: 'Wall Sit', youtube: yt('wall sit exercise') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -954,6 +998,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Stiff-Leg Deadlift', youtube: yt('stiff leg deadlift') },
               { name: 'Good Mornings', youtube: yt('barbell good mornings') },
             ],
+            restBetweenSets: 150,
           },
           {
             name: 'Lying Leg Curl',
@@ -965,6 +1010,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Seated Leg Curl', youtube: yt('seated leg curl') },
               { name: 'Nordic Curl', youtube: yt('nordic curl') },
             ],
+            restBetweenSets: 60,
           },
           {
             name: 'Standing Calf Raises',
@@ -976,6 +1022,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Seated Calf Raises', youtube: yt('seated calf raises') },
               { name: 'Donkey Calf Raises', youtube: yt('donkey calf raises') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -992,6 +1039,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Lying Leg Raises', youtube: yt('lying leg raises') },
               { name: 'Reverse Crunch', youtube: yt('reverse crunch') },
             ],
+            restBetweenSets: 45,
           },
           {
             name: 'Plank',
@@ -1003,6 +1051,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Dead Bug', youtube: yt('dead bug exercise') },
               { name: 'Ab Wheel Rollout', youtube: yt('ab wheel rollout') },
             ],
+            restBetweenSets: 45,
           },
         ],
       },
@@ -1050,6 +1099,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Incline Dumbbell Press', youtube: yt('incline dumbbell press') },
               { name: 'Incline Smith Machine Press', youtube: yt('incline smith machine press') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Pull-Ups',
@@ -1061,6 +1111,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Lat Pulldown', youtube: yt('lat pulldown') },
               { name: 'Chin-Ups', youtube: yt('chin-ups') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'Dumbbell Fly',
@@ -1072,6 +1123,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Cable Fly', youtube: yt('cable fly') },
               { name: 'Pec Deck', youtube: yt('pec deck machine') },
             ],
+            restBetweenSets: 90,
           },
           {
             name: 'T-Bar Row',
@@ -1083,6 +1135,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Meadows Row', youtube: yt('meadows row') },
               { name: 'Barbell Row', youtube: yt('barbell row') },
             ],
+            restBetweenSets: 90,
           },
         ],
       },
@@ -1099,6 +1152,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Dips', youtube: yt('tricep dips') },
               { name: 'JM Press', youtube: yt('jm press') },
             ],
+            restBetweenSets: 150,
           },
           {
             name: 'Preacher Curl',
@@ -1110,6 +1164,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Concentration Curl', youtube: yt('concentration curl') },
               { name: 'Spider Curl', youtube: yt('spider curl') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -1126,6 +1181,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Decline Sit-Up', youtube: yt('decline sit-up') },
               { name: 'Weighted Crunch', youtube: yt('weighted crunch') },
             ],
+            restBetweenSets: 45,
           },
           {
             name: 'Neck Curls (plate)',
@@ -1137,6 +1193,7 @@ const pushPullRoutine: WorkoutDay[] = [
               { name: 'Neck Isometric Holds', youtube: yt('neck isometric holds') },
               { name: '4-Way Neck', youtube: yt('4 way neck exercise') },
             ],
+            restBetweenSets: 60,
           },
         ],
       },
@@ -1203,6 +1260,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Dumbbell Bench Press', youtube: yt('dumbbell bench press') },
             { name: 'Machine Chest Press', youtube: yt('machine chest press') },
           ],
+          restBetweenSets: 150,
         },
         {
           name: 'Barbell Row',
@@ -1214,6 +1272,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'T-Bar Row', youtube: yt('t-bar row') },
             { name: 'Pendlay Row', youtube: yt('pendlay row') },
           ],
+          restBetweenSets: 150,
         },
       ],
     },
@@ -1230,6 +1289,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Arnold Press', youtube: yt('arnold press') },
             { name: 'Machine Shoulder Press', youtube: yt('machine shoulder press') },
           ],
+          restBetweenSets: 90,
         },
         {
           name: 'Incline Dumbbell Press',
@@ -1241,6 +1301,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Incline Barbell Press', youtube: yt('incline barbell press') },
             { name: 'Landmine Press', youtube: yt('landmine press') },
           ],
+          restBetweenSets: 90,
         },
         {
           name: 'Lateral Raise',
@@ -1252,6 +1313,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Cable Lateral Raise', youtube: yt('cable lateral raise') },
             { name: 'Machine Lateral Raise', youtube: yt('machine lateral raise') },
           ],
+          restBetweenSets: 60,
         },
       ],
     },
@@ -1268,6 +1330,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Pull-Ups', youtube: yt('pull-ups') },
             { name: 'Straight-Arm Pulldown', youtube: yt('straight arm pulldown') },
           ],
+          restBetweenSets: 90,
         },
         {
           name: 'Face Pulls',
@@ -1279,6 +1342,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Rear Delt Fly', youtube: yt('rear delt fly') },
             { name: 'Reverse Pec Deck', youtube: yt('reverse pec deck') },
           ],
+          restBetweenSets: 60,
         },
       ],
     },
@@ -1295,6 +1359,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'EZ-Bar Curl', youtube: yt('ez bar curl') },
             { name: 'Dumbbell Curl', youtube: yt('dumbbell curl') },
           ],
+          restBetweenSets: 60,
         },
         {
           name: 'Rope Pushdown',
@@ -1306,6 +1371,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Skull Crushers', youtube: yt('skull crushers') },
             { name: 'Dips', youtube: yt('tricep dips') },
           ],
+          restBetweenSets: 60,
         },
         {
           name: 'Dumbbell Hammer Curl',
@@ -1317,6 +1383,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Cable Rope Curl', youtube: yt('cable rope curl') },
             { name: 'Reverse Curl', youtube: yt('reverse curl') },
           ],
+          restBetweenSets: 60,
         },
       ],
     },
@@ -1333,6 +1400,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Cable Crunch', youtube: yt('cable crunch') },
             { name: 'Ab Wheel Rollout', youtube: yt('ab wheel') },
           ],
+          restBetweenSets: 45,
         },
         {
           name: 'Neck Curls (plate)',
@@ -1344,6 +1412,7 @@ const fullWorkout1: FullWorkout = {
             { name: 'Neck Isometric Holds', youtube: yt('neck isometrics') },
             { name: 'Shrugs', youtube: yt('barbell shrugs') },
           ],
+          restBetweenSets: 60,
         },
       ],
     },
@@ -1393,6 +1462,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Front Squat', youtube: yt('front squat') },
             { name: 'Safety Bar Squat', youtube: yt('safety bar squat') },
           ],
+          restBetweenSets: 150,
         },
         {
           name: 'Romanian Deadlift',
@@ -1404,6 +1474,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Conventional Deadlift', youtube: yt('conventional deadlift') },
             { name: 'Trap Bar Deadlift', youtube: yt('trap bar deadlift') },
           ],
+          restBetweenSets: 150,
         },
       ],
     },
@@ -1420,6 +1491,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Walking Lunges', youtube: yt('walking lunges dumbbell') },
             { name: 'Step-Ups', youtube: yt('step ups') },
           ],
+          restBetweenSets: 90,
         },
         {
           name: 'Leg Press',
@@ -1431,6 +1503,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Hack Squat', youtube: yt('hack squat') },
             { name: 'Leg Extension', youtube: yt('leg extension') },
           ],
+          restBetweenSets: 90,
         },
       ],
     },
@@ -1447,6 +1520,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Seated Leg Curl', youtube: yt('seated leg curl') },
             { name: 'Nordic Curl', youtube: yt('nordic hamstring curl') },
           ],
+          restBetweenSets: 60,
         },
         {
           name: 'Standing Calf Raises',
@@ -1458,6 +1532,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Seated Calf Raises', youtube: yt('seated calf raises') },
             { name: 'Single-Leg Calf Raises', youtube: yt('single leg calf raises') },
           ],
+          restBetweenSets: 60,
         },
       ],
     },
@@ -1474,6 +1549,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Decline Sit-Up', youtube: yt('decline sit-up') },
             { name: 'Hanging Leg Raises', youtube: yt('hanging leg raises') },
           ],
+          restBetweenSets: 45,
         },
         {
           name: 'Side Plank',
@@ -1485,6 +1561,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Russian Twist', youtube: yt('russian twist') },
             { name: 'Pallof Press', youtube: yt('pallof press') },
           ],
+          restBetweenSets: 45,
         },
         {
           name: 'Dead Bug',
@@ -1496,6 +1573,7 @@ const fullWorkout2: FullWorkout = {
             { name: 'Bird Dog', youtube: yt('bird dog exercise') },
             { name: 'Plank', youtube: yt('plank exercise') },
           ],
+          restBetweenSets: 45,
         },
       ],
     },
@@ -1529,7 +1607,7 @@ function badgeClass(muscle: string): string {
 }
 
 /* ================================================================
-   REST TIMER — Web Audio API beep + countdown
+   REST TIMER — Web Audio API beep + smart defaults
    ================================================================ */
 
 function playBeep() {
@@ -1559,27 +1637,64 @@ function formatTime(s: number): string {
   return `${m}:${sec.toString().padStart(2, '0')}`;
 }
 
+function restCategoryLabel(seconds: number): string {
+  if (seconds >= 150) return 'Heavy compound';
+  if (seconds >= 90) return 'Moderate compound';
+  if (seconds >= 60) return 'Isolation';
+  if (seconds >= 45) return 'Core / Abs';
+  return 'Rest';
+}
+
+function restCategoryColor(seconds: number): string {
+  if (seconds >= 150) return 'text-red-400';
+  if (seconds >= 90) return 'text-amber-400';
+  if (seconds >= 60) return 'text-brand-400';
+  return 'text-emerald-400';
+}
+
+interface TimerEventDetail {
+  seconds: number;
+  label: string;
+}
+
 function RestTimer() {
   const [seconds, setSeconds] = useState(0);
   const [running, setRunning] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [label, setLabel] = useState('');
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const startTimer = (s: number) => {
+  const startTimer = useCallback((s: number, lbl?: string) => {
     if (intervalRef.current) clearInterval(intervalRef.current);
-    setSeconds(s);
+    setSeconds(Math.max(15, s));
     setRunning(true);
     setFinished(false);
-  };
+    setExpanded(false);
+    if (lbl !== undefined) setLabel(lbl);
+  }, []);
 
-  const cancelTimer = () => {
+  const adjustTime = useCallback((delta: number) => {
+    setSeconds((prev) => Math.max(15, prev + delta));
+  }, []);
+
+  const cancelTimer = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = null;
     setRunning(false);
     setSeconds(0);
     setFinished(false);
-  };
+    setLabel('');
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<TimerEventDetail>).detail;
+      startTimer(detail.seconds, detail.label);
+    };
+    window.addEventListener('start-rest-timer', handler);
+    return () => window.removeEventListener('start-rest-timer', handler);
+  }, [startTimer]);
 
   useEffect(() => {
     if (running && seconds > 0) {
@@ -1610,15 +1725,13 @@ function RestTimer() {
   }, [finished]);
 
   const isActive = running || seconds > 0 || finished;
-  const progress = running && seconds > 0 ? 1 : 0;
-  void progress;
 
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
-      {/* Timer display when running */}
+      {/* Timer display when running or finished */}
       {isActive && (
-        <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/60 rounded-2xl shadow-2xl shadow-black/40 p-4 min-w-[200px]">
-          <div className="flex items-center justify-between mb-2">
+        <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/60 rounded-2xl shadow-2xl shadow-black/40 p-4 min-w-[220px]">
+          <div className="flex items-center justify-between mb-1">
             <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Rest Timer</span>
             <button
               onClick={cancelTimer}
@@ -1627,28 +1740,35 @@ function RestTimer() {
               <IconX />
             </button>
           </div>
+          {label && (
+            <p className="text-[11px] text-zinc-500 mb-1">{label}</p>
+          )}
           <div className={`text-4xl font-mono font-bold text-center py-2 ${finished ? 'text-emerald-400' : running ? 'text-brand-300' : 'text-zinc-300'}`}>
             {finished ? '✓ Done!' : formatTime(seconds)}
           </div>
           {running && (
-            <button
-              onClick={cancelTimer}
-              className="w-full mt-2 px-3 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-300 rounded-xl text-sm font-medium transition-colors cursor-pointer"
-            >
-              Cancel
-            </button>
-          )}
-          {!running && !finished && seconds === 0 && (
-            <div className="grid grid-cols-4 gap-1.5 mt-2">
-              {[30, 60, 90, 120].map((s) => (
+            <div className="space-y-2 mt-2">
+              {/* +15s / -15s adjustment buttons */}
+              <div className="grid grid-cols-2 gap-2">
                 <button
-                  key={s}
-                  onClick={() => startTimer(s)}
-                  className="px-2 py-2 bg-brand-600/20 hover:bg-brand-600/30 text-brand-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                  onClick={() => adjustTime(-15)}
+                  className="px-2 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
                 >
-                  {s}s
+                  −15s
                 </button>
-              ))}
+                <button
+                  onClick={() => adjustTime(15)}
+                  className="px-2 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                >
+                  +15s
+                </button>
+              </div>
+              <button
+                onClick={cancelTimer}
+                className="w-full px-3 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-300 rounded-xl text-sm font-medium transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
             </div>
           )}
         </div>
@@ -1656,9 +1776,9 @@ function RestTimer() {
 
       {/* Expanded preset panel */}
       {expanded && !isActive && (
-        <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/60 rounded-2xl shadow-2xl shadow-black/40 p-4 min-w-[200px]">
+        <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/60 rounded-2xl shadow-2xl shadow-black/40 p-4 min-w-[220px]">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Rest Timer</span>
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Quick Timer</span>
             <button
               onClick={() => setExpanded(false)}
               className="p-1 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
@@ -1666,14 +1786,20 @@ function RestTimer() {
               <IconX />
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            {[30, 60, 90, 120].map((s) => (
+          <div className="space-y-1.5">
+            {[
+              { s: 150, cat: 'Heavy compound' },
+              { s: 90, cat: 'Moderate compound' },
+              { s: 60, cat: 'Isolation' },
+              { s: 45, cat: 'Core / Abs' },
+            ].map(({ s, cat }) => (
               <button
                 key={s}
-                onClick={() => { startTimer(s); setExpanded(false); }}
-                className="px-3 py-3 bg-brand-600/20 hover:bg-brand-600/30 text-brand-300 rounded-xl text-sm font-bold transition-colors cursor-pointer"
+                onClick={() => startTimer(s, cat + ' · ' + formatTime(s))}
+                className="w-full flex items-center justify-between px-3 py-2.5 bg-brand-600/15 hover:bg-brand-600/25 text-brand-300 rounded-xl text-sm font-medium transition-colors cursor-pointer"
               >
-                {s}s
+                <span className="text-zinc-400 text-xs">{cat}</span>
+                <span className="font-bold">{formatTime(s)}</span>
               </button>
             ))}
           </div>
@@ -1768,6 +1894,18 @@ function ExerciseCard({
 }) {
   const [showAlts, setShowAlts] = useState(false);
 
+  const rest = exercise.restBetweenSets;
+  const catLabel = restCategoryLabel(rest);
+  const catColor = restCategoryColor(rest);
+
+  const handleStartRest = () => {
+    window.dispatchEvent(
+      new CustomEvent<TimerEventDetail>('start-rest-timer', {
+        detail: { seconds: rest, label: `${catLabel} · ${formatTime(rest)}` },
+      }),
+    );
+  };
+
   return (
     <div className={`bg-zinc-800/30 border rounded-lg p-4 transition-all duration-200 ${checked ? 'border-emerald-500/30 bg-emerald-950/10' : 'border-zinc-700/30'}`}>
       <div className="flex items-start gap-3">
@@ -1814,8 +1952,16 @@ function ExerciseCard({
             ))}
           </ul>
 
-          {/* Alternatives toggle */}
-          <div className="mt-2.5 flex items-center gap-2">
+          {/* Action row: Rest timer + Alternatives */}
+          <div className="mt-2.5 flex items-center gap-2 flex-wrap">
+            <button
+              onClick={handleStartRest}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-zinc-700/40 hover:bg-zinc-700/60 rounded-lg text-[11px] font-medium transition-colors cursor-pointer group"
+            >
+              <IconTimer className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300" />
+              <span className="text-zinc-300">Rest {formatTime(rest)}</span>
+              <span className={`${catColor} hidden sm:inline`}>· {catLabel}</span>
+            </button>
             <button
               onClick={() => setShowAlts(!showAlts)}
               className="inline-flex items-center gap-1 px-2.5 py-1 bg-brand-600/15 hover:bg-brand-600/25 text-brand-300 rounded-lg text-[11px] font-medium transition-colors cursor-pointer"
