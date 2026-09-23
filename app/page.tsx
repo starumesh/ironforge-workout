@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, ReactNode } from 'react';
+import { useState, useCallback, useEffect, useRef, ReactNode } from 'react';
 
 /* ================================================================
    TYPES
@@ -141,6 +141,31 @@ function IconTarget({ className = '' }: { className?: string }) {
   return (
     <svg className={`w-5 h-5 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
       <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />
+    </svg>
+  );
+}
+
+function IconCheck({ className = '' }: { className?: string }) {
+  return (
+    <svg className={`w-4 h-4 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  );
+}
+
+function IconTimer({ className = '' }: { className?: string }) {
+  return (
+    <svg className={`w-5 h-5 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M10 2h4" />
+    </svg>
+  );
+}
+
+function IconX({ className = '' }: { className?: string }) {
+  return (
+    <svg className={`w-4 h-4 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>
   );
 }
@@ -1504,6 +1529,175 @@ function badgeClass(muscle: string): string {
 }
 
 /* ================================================================
+   REST TIMER — Web Audio API beep + countdown
+   ================================================================ */
+
+function playBeep() {
+  try {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const ctx = new AudioCtx();
+    for (let i = 0; i < 3; i++) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.35, ctx.currentTime + i * 0.25);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.25 + 0.2);
+      osc.start(ctx.currentTime + i * 0.25);
+      osc.stop(ctx.currentTime + i * 0.25 + 0.2);
+    }
+  } catch {
+    // Audio not supported
+  }
+}
+
+function formatTime(s: number): string {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function RestTimer() {
+  const [seconds, setSeconds] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [finished, setFinished] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startTimer = (s: number) => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setSeconds(s);
+    setRunning(true);
+    setFinished(false);
+  };
+
+  const cancelTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = null;
+    setRunning(false);
+    setSeconds(0);
+    setFinished(false);
+  };
+
+  useEffect(() => {
+    if (running && seconds > 0) {
+      intervalRef.current = setInterval(() => {
+        setSeconds((prev) => {
+          if (prev <= 1) {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+            intervalRef.current = null;
+            setRunning(false);
+            setFinished(true);
+            playBeep();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [running, seconds > 0]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (finished) {
+      const t = setTimeout(() => setFinished(false), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [finished]);
+
+  const isActive = running || seconds > 0 || finished;
+  const progress = running && seconds > 0 ? 1 : 0;
+  void progress;
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
+      {/* Timer display when running */}
+      {isActive && (
+        <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/60 rounded-2xl shadow-2xl shadow-black/40 p-4 min-w-[200px]">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Rest Timer</span>
+            <button
+              onClick={cancelTimer}
+              className="p-1 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+            >
+              <IconX />
+            </button>
+          </div>
+          <div className={`text-4xl font-mono font-bold text-center py-2 ${finished ? 'text-emerald-400' : running ? 'text-brand-300' : 'text-zinc-300'}`}>
+            {finished ? '✓ Done!' : formatTime(seconds)}
+          </div>
+          {running && (
+            <button
+              onClick={cancelTimer}
+              className="w-full mt-2 px-3 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-300 rounded-xl text-sm font-medium transition-colors cursor-pointer"
+            >
+              Cancel
+            </button>
+          )}
+          {!running && !finished && seconds === 0 && (
+            <div className="grid grid-cols-4 gap-1.5 mt-2">
+              {[30, 60, 90, 120].map((s) => (
+                <button
+                  key={s}
+                  onClick={() => startTimer(s)}
+                  className="px-2 py-2 bg-brand-600/20 hover:bg-brand-600/30 text-brand-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                >
+                  {s}s
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Expanded preset panel */}
+      {expanded && !isActive && (
+        <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/60 rounded-2xl shadow-2xl shadow-black/40 p-4 min-w-[200px]">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Rest Timer</span>
+            <button
+              onClick={() => setExpanded(false)}
+              className="p-1 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+            >
+              <IconX />
+            </button>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {[30, 60, 90, 120].map((s) => (
+              <button
+                key={s}
+                onClick={() => { startTimer(s); setExpanded(false); }}
+                className="px-3 py-3 bg-brand-600/20 hover:bg-brand-600/30 text-brand-300 rounded-xl text-sm font-bold transition-colors cursor-pointer"
+              >
+                {s}s
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Floating trigger button */}
+      {!isActive && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className={`p-3.5 rounded-full shadow-lg transition-all cursor-pointer ${
+            expanded
+              ? 'bg-brand-600 text-white shadow-brand-500/30'
+              : 'bg-zinc-800/90 backdrop-blur-sm border border-zinc-700/60 text-zinc-400 hover:text-brand-300 hover:border-brand-500/40'
+          }`}
+        >
+          <IconTimer className="w-5 h-5" />
+        </button>
+      )}
+    </div>
+  );
+}
+
+/* ================================================================
    REUSABLE COMPONENTS
    ================================================================ */
 
@@ -1559,73 +1753,97 @@ function Collapsible({
   );
 }
 
-function ExerciseCard({ exercise, index }: { exercise: Exercise; index: number }) {
+function ExerciseCard({
+  exercise,
+  index,
+  exerciseKey,
+  checked,
+  onToggle,
+}: {
+  exercise: Exercise;
+  index: number;
+  exerciseKey: string;
+  checked: boolean;
+  onToggle: (key: string) => void;
+}) {
   const [showAlts, setShowAlts] = useState(false);
 
   return (
-    <Collapsible
-      variant="exercise"
-      title={`${index + 1}. ${exercise.name}`}
-      badge={
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="badge-zinc text-[11px]">{exercise.sets}×{exercise.reps}</span>
-          <span className={`${badgeClass(exercise.muscle)} text-[11px]`}>{exercise.muscle}</span>
-        </div>
-      }
-    >
-      <div className="space-y-3 text-sm">
-        <p className="text-zinc-400">{exercise.notes}</p>
+    <div className={`bg-zinc-800/30 border rounded-lg p-4 transition-all duration-200 ${checked ? 'border-emerald-500/30 bg-emerald-950/10' : 'border-zinc-700/30'}`}>
+      <div className="flex items-start gap-3">
+        {/* Checkbox */}
+        <button
+          onClick={() => onToggle(exerciseKey)}
+          className={`mt-0.5 shrink-0 w-5 h-5 rounded flex items-center justify-center border transition-all cursor-pointer ${
+            checked
+              ? 'bg-emerald-600 border-emerald-500 text-white'
+              : 'border-zinc-600 hover:border-brand-400 bg-zinc-800/60'
+          }`}
+        >
+          {checked && <IconCheck className="w-3.5 h-3.5" />}
+        </button>
 
-        <div>
-          <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1.5">Form Tips</h4>
-          <ul className="space-y-1">
+        {/* Exercise content */}
+        <div className="flex-1 min-w-0">
+          {/* Header row: name, YouTube, badges */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className={`font-semibold text-sm transition-all ${checked ? 'line-through text-zinc-500' : 'text-zinc-100'}`}>
+              {index + 1}. {exercise.name}
+            </span>
+            <a
+              href={exercise.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 rounded text-[10px] font-medium transition-colors"
+              title="Watch Demo"
+            >
+              <IconPlay className="w-3 h-3" />
+              <span className="hidden sm:inline">Demo</span>
+            </a>
+            <span className="px-2 py-0.5 rounded-md bg-zinc-700/50 text-zinc-200 text-xs font-bold tracking-wide">{exercise.sets}×{exercise.reps}</span>
+            <span className={`${badgeClass(exercise.muscle)} text-[11px]`}>{exercise.muscle}</span>
+          </div>
+
+          {/* Form tips — compact bullets, always visible */}
+          <ul className={`mt-2 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-0.5 ${checked ? 'opacity-50' : ''}`}>
             {exercise.formTips.map((tip, i) => (
-              <li key={i} className="text-zinc-400 flex items-start gap-2">
-                <span className="text-brand-400 mt-0.5 text-xs">●</span>
-                {tip}
+              <li key={i} className="text-xs text-zinc-400 flex items-start gap-1.5">
+                <span className="text-brand-400 mt-px text-[8px]">●</span>
+                <span>{tip}</span>
               </li>
             ))}
           </ul>
-        </div>
 
-        <div className="flex flex-wrap gap-2 pt-1">
-          <a
-            href={exercise.youtube}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-300 rounded-lg text-xs font-medium transition-colors"
-          >
-            <IconPlay className="w-3.5 h-3.5" />
-            Watch Demo
-          </a>
-          <button
-            onClick={() => setShowAlts(!showAlts)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-600/20 hover:bg-brand-600/30 text-brand-300 rounded-lg text-xs font-medium transition-colors cursor-pointer"
-          >
-            <IconSwap className="w-3.5 h-3.5" />
-            {showAlts ? 'Hide' : 'Show'} Alternatives
-          </button>
-        </div>
-
-        {showAlts && (
-          <div className="bg-zinc-900/60 rounded-lg p-3 space-y-2 border border-zinc-700/30">
-            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Alternative Exercises</h4>
-            {exercise.alternatives.map((alt, i) => (
-              <a
-                key={i}
-                href={alt.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-zinc-300 hover:text-brand-300 transition-colors group"
-              >
-                <IconPlay className="w-3 h-3 text-red-400 group-hover:text-red-300" />
-                <span>{alt.name}</span>
-              </a>
-            ))}
+          {/* Alternatives toggle */}
+          <div className="mt-2.5 flex items-center gap-2">
+            <button
+              onClick={() => setShowAlts(!showAlts)}
+              className="inline-flex items-center gap-1 px-2.5 py-1 bg-brand-600/15 hover:bg-brand-600/25 text-brand-300 rounded-lg text-[11px] font-medium transition-colors cursor-pointer"
+            >
+              <IconSwap className="w-3 h-3" />
+              {showAlts ? 'Hide' : ''} Alternatives ({exercise.alternatives.length})
+            </button>
           </div>
-        )}
+
+          {showAlts && (
+            <div className="mt-2 bg-zinc-900/60 rounded-lg p-3 space-y-1.5 border border-zinc-700/30">
+              {exercise.alternatives.map((alt, i) => (
+                <a
+                  key={i}
+                  href={alt.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-zinc-300 hover:text-brand-300 transition-colors group"
+                >
+                  <IconPlay className="w-3 h-3 text-red-400 group-hover:text-red-300" />
+                  <span>{alt.name}</span>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </Collapsible>
+    </div>
   );
 }
 
@@ -1653,7 +1871,21 @@ function ActivationList({ moves, type }: { moves: ActivationMove[]; type: 'pre' 
   );
 }
 
-function WorkoutDayPanel({ day }: { day: WorkoutDay }) {
+function WorkoutDayPanel({
+  day,
+  checkedExercises,
+  onToggleExercise,
+}: {
+  day: WorkoutDay;
+  checkedExercises: Set<string>;
+  onToggleExercise: (key: string) => void;
+}) {
+  const totalExercises = day.sections.reduce((a, s) => a + s.exercises.length, 0);
+  const completedExercises = day.sections.reduce((acc, sec, si) => {
+    return acc + sec.exercises.filter((_, ei) => checkedExercises.has(`${day.id}::${si}::${ei}`)).length;
+  }, 0);
+  const allDone = completedExercises === totalExercises && totalExercises > 0;
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
@@ -1664,6 +1896,20 @@ function WorkoutDayPanel({ day }: { day: WorkoutDay }) {
         </div>
       </div>
       <h4 className="text-lg font-semibold text-gradient">{day.title}</h4>
+
+      {/* Progress indicator */}
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all duration-500 ${allDone ? 'bg-emerald-500' : 'bg-brand-500'}`}
+            style={{ width: `${totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0}%` }}
+          />
+        </div>
+        <span className={`text-sm font-semibold tabular-nums ${allDone ? 'text-emerald-400' : 'text-zinc-400'}`}>
+          {completedExercises}/{totalExercises} done
+        </span>
+      </div>
+
       <div className="flex flex-wrap gap-2">
         {day.muscles.map((m) => (
           <span key={m} className={badgeClass(m)}>{m}</span>
@@ -1680,9 +1926,20 @@ function WorkoutDayPanel({ day }: { day: WorkoutDay }) {
       {day.sections.map((sec, si) => (
         <Collapsible key={si} variant="section" title={sec.title} defaultOpen>
           <div className="space-y-2 mt-2">
-            {sec.exercises.map((ex, ei) => (
-              <ExerciseCard key={ei} exercise={ex} index={ei + day.sections.slice(0, si).reduce((a, s) => a + s.exercises.length, 0)} />
-            ))}
+            {sec.exercises.map((ex, ei) => {
+              const globalIndex = day.sections.slice(0, si).reduce((a, s) => a + s.exercises.length, 0) + ei;
+              const exKey = `${day.id}::${si}::${ei}`;
+              return (
+                <ExerciseCard
+                  key={ei}
+                  exercise={ex}
+                  index={globalIndex}
+                  exerciseKey={exKey}
+                  checked={checkedExercises.has(exKey)}
+                  onToggle={onToggleExercise}
+                />
+              );
+            })}
           </div>
         </Collapsible>
       ))}
@@ -1698,6 +1955,23 @@ function WorkoutDayPanel({ day }: { day: WorkoutDay }) {
 }
 
 function FullWorkoutPanel({ workout }: { workout: FullWorkout }) {
+  const [checkedExercises, setCheckedExercises] = useState<Set<string>>(new Set());
+
+  const toggleExercise = useCallback((key: string) => {
+    setCheckedExercises((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
+
+  const totalExercises = workout.sections.reduce((a, s) => a + s.exercises.length, 0);
+  const completedExercises = workout.sections.reduce((acc, sec, si) => {
+    return acc + sec.exercises.filter((_, ei) => checkedExercises.has(`${workout.id}::${si}::${ei}`)).length;
+  }, 0);
+  const allDone = completedExercises === totalExercises && totalExercises > 0;
+
   return (
     <div className="space-y-4">
       <div>
@@ -1709,6 +1983,20 @@ function FullWorkoutPanel({ workout }: { workout: FullWorkout }) {
         <span>{workout.duration}</span>
       </div>
       <p className="text-sm text-zinc-400 leading-relaxed">{workout.overview}</p>
+
+      {/* Progress indicator */}
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all duration-500 ${allDone ? 'bg-emerald-500' : 'bg-brand-500'}`}
+            style={{ width: `${totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0}%` }}
+          />
+        </div>
+        <span className={`text-sm font-semibold tabular-nums ${allDone ? 'text-emerald-400' : 'text-zinc-400'}`}>
+          {completedExercises}/{totalExercises} done
+        </span>
+      </div>
+
       <div className="flex flex-wrap gap-2">
         {workout.muscles.map((m) => (
           <span key={m} className={badgeClass(m)}>{m}</span>
@@ -1722,9 +2010,19 @@ function FullWorkoutPanel({ workout }: { workout: FullWorkout }) {
       {workout.sections.map((sec, si) => (
         <Collapsible key={si} variant="section" title={sec.title} defaultOpen>
           <div className="space-y-2 mt-2">
-            {sec.exercises.map((ex, ei) => (
-              <ExerciseCard key={ei} exercise={ex} index={ei} />
-            ))}
+            {sec.exercises.map((ex, ei) => {
+              const exKey = `${workout.id}::${si}::${ei}`;
+              return (
+                <ExerciseCard
+                  key={ei}
+                  exercise={ex}
+                  index={ei}
+                  exerciseKey={exKey}
+                  checked={checkedExercises.has(exKey)}
+                  onToggle={toggleExercise}
+                />
+              );
+            })}
           </div>
         </Collapsible>
       ))}
@@ -1911,6 +2209,16 @@ function HomePage({ onNavigate }: { onNavigate: (v: View) => void }) {
 
 function SplitPage() {
   const [activeDay, setActiveDay] = useState(0);
+  const [checkedExercises, setCheckedExercises] = useState<Set<string>>(new Set());
+
+  const toggleExercise = useCallback((key: string) => {
+    setCheckedExercises((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -1939,13 +2247,27 @@ function SplitPage() {
         ))}
       </div>
 
-      <WorkoutDayPanel day={splitRoutine[activeDay]} />
+      <WorkoutDayPanel
+        day={splitRoutine[activeDay]}
+        checkedExercises={checkedExercises}
+        onToggleExercise={toggleExercise}
+      />
     </div>
   );
 }
 
 function PushPullPage() {
   const [activeDay, setActiveDay] = useState(0);
+  const [checkedExercises, setCheckedExercises] = useState<Set<string>>(new Set());
+
+  const toggleExercise = useCallback((key: string) => {
+    setCheckedExercises((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -1974,7 +2296,11 @@ function PushPullPage() {
         ))}
       </div>
 
-      <WorkoutDayPanel day={pushPullRoutine[activeDay]} />
+      <WorkoutDayPanel
+        day={pushPullRoutine[activeDay]}
+        checkedExercises={checkedExercises}
+        onToggleExercise={toggleExercise}
+      />
     </div>
   );
 }
@@ -2064,6 +2390,9 @@ export default function WorkoutApp() {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {renderView()}
       </main>
+
+      {/* Rest Timer — visible on workout pages */}
+      {view !== 'home' && <RestTimer />}
 
       {/* Footer */}
       <footer className="border-t border-zinc-800/60 py-8 mt-16">
