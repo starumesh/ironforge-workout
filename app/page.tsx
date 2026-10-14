@@ -64,7 +64,8 @@ type View =
   | 'pre-workout'
   | 'post-workout'
   | 'full-workout-1'
-  | 'full-workout-2';
+  | 'full-workout-2'
+  | 'muscle-focus';
 
 /* ================================================================
    ICONS (inline SVG components)
@@ -170,6 +171,16 @@ function IconX({ className = '' }: { className?: string }) {
     </svg>
   );
 }
+
+function IconMuscle({ className = '' }: { className?: string }) {
+  return (
+    <svg className={`w-5 h-5 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8 2 5 5 5 8c0 2 1 3.5 2.5 4.5L6 18h12l-1.5-5.5C18 11.5 19 10 19 8c0-3-3-6-7-6z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 18v2a1 1 0 001 1h4a1 1 0 001-1v-2" />
+    </svg>
+  );
+}
+
 
 /* ================================================================
    HELPER — YouTube search URL builder
@@ -2249,6 +2260,198 @@ function PostWorkoutOverview() {
 }
 
 /* ================================================================
+   MUSCLE FOCUS PAGE
+   ================================================================ */
+
+// Canonical muscle groups and which keywords map to them
+const MUSCLE_GROUPS: { label: string; keywords: string[]; badge: string; color: string }[] = [
+  { label: 'Chest', keywords: ['chest', 'upper chest', 'pec'], badge: 'badge-blue', color: 'from-blue-500/20 to-blue-600/10 border-blue-500/30 hover:border-blue-400/50' },
+  { label: 'Back', keywords: ['back', 'lat', 'lats', 'mid back', 'upper back', 'upper/mid back', 'mid/upper back'], badge: 'badge-emerald', color: 'from-emerald-500/20 to-emerald-600/10 border-emerald-500/30 hover:border-emerald-400/50' },
+  { label: 'Shoulders', keywords: ['shoulder', 'delt', 'delts', 'side delt', 'rear delt', 'front delt'], badge: 'badge-violet', color: 'from-violet-500/20 to-violet-600/10 border-violet-500/30 hover:border-violet-400/50' },
+  { label: 'Biceps', keywords: ['bicep', 'biceps', 'brachialis'], badge: 'badge-amber', color: 'from-amber-500/20 to-amber-600/10 border-amber-500/30 hover:border-amber-400/50' },
+  { label: 'Triceps', keywords: ['tricep', 'triceps'], badge: 'badge-amber', color: 'from-orange-500/20 to-orange-600/10 border-orange-500/30 hover:border-orange-400/50' },
+  { label: 'Legs', keywords: ['quad', 'quads', 'hamstring', 'hamstrings', 'glute', 'glutes', 'calf', 'calves', 'leg', 'legs', 'thigh', 'thighs'], badge: 'badge-rose', color: 'from-rose-500/20 to-rose-600/10 border-rose-500/30 hover:border-rose-400/50' },
+  { label: 'Core', keywords: ['core', 'abs', 'ab', 'oblique', 'obliques', 'lower abs', 'deep core'], badge: 'badge-zinc', color: 'from-zinc-500/20 to-zinc-600/10 border-zinc-500/30 hover:border-zinc-400/50' },
+  { label: 'Neck', keywords: ['neck'], badge: 'badge-zinc', color: 'from-slate-500/20 to-slate-600/10 border-slate-500/30 hover:border-slate-400/50' },
+];
+
+// Collect all unique exercises across every routine
+function getAllExercises(): { exercise: Exercise; routineLabel: string }[] {
+  const seen = new Set<string>();
+  const result: { exercise: Exercise; routineLabel: string }[] = [];
+
+  const addFrom = (days: WorkoutDay[], routineLabel: string) => {
+    for (const day of days) {
+      for (const sec of day.sections) {
+        for (const ex of sec.exercises) {
+          if (!seen.has(ex.name)) {
+            seen.add(ex.name);
+            result.push({ exercise: ex, routineLabel });
+          }
+        }
+      }
+    }
+  };
+
+  const addFromFull = (workout: FullWorkout, routineLabel: string) => {
+    for (const sec of workout.sections) {
+      for (const ex of sec.exercises) {
+        if (!seen.has(ex.name)) {
+          seen.add(ex.name);
+          result.push({ exercise: ex, routineLabel });
+        }
+      }
+    }
+  };
+
+  addFrom(splitRoutine, '4-Day Split');
+  addFrom(pushPullRoutine, 'Push/Pull');
+  addFromFull(fullWorkout1, 'Full Workout 1');
+  addFromFull(fullWorkout2, 'Full Workout 2');
+
+  return result;
+}
+
+function muscleMatchesGroup(muscle: string, group: { label: string; keywords: string[] }): boolean {
+  const m = muscle.toLowerCase();
+  return group.keywords.some((kw) => m.includes(kw));
+}
+
+function MuscleFocusPage() {
+  const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
+  const [checkedExercises, setCheckedExercises] = useState<Set<string>>(new Set());
+
+  const allExercises = getAllExercises();
+
+  const toggleExercise = useCallback((key: string) => {
+    setCheckedExercises((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
+
+  const activeGroup = MUSCLE_GROUPS.find((g) => g.label === selectedMuscle) ?? null;
+
+  const filtered = activeGroup
+    ? allExercises.filter(({ exercise }) => muscleMatchesGroup(exercise.muscle, activeGroup))
+    : [];
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h2 className="text-2xl font-bold text-zinc-100">Train by Muscle Group</h2>
+        <p className="text-sm text-zinc-400 mt-2 leading-relaxed">
+          Pick the muscle you want to focus on today and get every relevant exercise from the entire program — with demos, form tips, and rest timers included.
+        </p>
+      </div>
+
+      {/* Muscle Selector Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {MUSCLE_GROUPS.map((group) => {
+          const count = allExercises.filter(({ exercise }) =>
+            muscleMatchesGroup(exercise.muscle, group)
+          ).length;
+          const isActive = selectedMuscle === group.label;
+          return (
+            <button
+              key={group.label}
+              onClick={() => setSelectedMuscle(isActive ? null : group.label)}
+              className={`relative text-left p-4 rounded-2xl bg-gradient-to-br border backdrop-blur-sm transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer group ${
+                isActive
+                  ? group.color + ' ring-2 ring-white/20 shadow-lg'
+                  : group.color
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-bold text-zinc-100 text-base">{group.label}</span>
+                {isActive && (
+                  <span className="w-2 h-2 rounded-full bg-white/70 animate-pulse" />
+                )}
+              </div>
+              <span className="text-xs text-zinc-400">{count} exercise{count !== 1 ? 's' : ''}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Exercise List */}
+      {!selectedMuscle && (
+        <div className="glass-card px-6 py-10 text-center">
+          <IconMuscle className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
+          <p className="text-zinc-400 font-medium">Choose a muscle group above</p>
+          <p className="text-zinc-600 text-sm mt-1">All matching exercises will appear here with demos and form cues.</p>
+        </div>
+      )}
+
+      {selectedMuscle && filtered.length === 0 && (
+        <div className="glass-card px-6 py-8 text-center">
+          <p className="text-zinc-400">No exercises found for {selectedMuscle}.</p>
+        </div>
+      )}
+
+      {selectedMuscle && filtered.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-zinc-100">
+              {selectedMuscle} Exercises
+              <span className="ml-2 text-sm font-normal text-zinc-500">({filtered.length} total)</span>
+            </h3>
+            {checkedExercises.size > 0 && (
+              <button
+                onClick={() => setCheckedExercises(new Set())}
+                className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+              >
+                Clear done
+              </button>
+            )}
+          </div>
+
+          {/* Progress bar */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-500 ${
+                  checkedExercises.size === filtered.length && filtered.length > 0
+                    ? 'bg-emerald-500'
+                    : 'bg-brand-500'
+                }`}
+                style={{ width: `${filtered.length > 0 ? (checkedExercises.size / filtered.length) * 100 : 0}%` }}
+              />
+            </div>
+            <span className={`text-sm font-semibold tabular-nums ${checkedExercises.size === filtered.length && filtered.length > 0 ? 'text-emerald-400' : 'text-zinc-400'}`}>
+              {checkedExercises.size}/{filtered.length} done
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            {filtered.map(({ exercise, routineLabel }, i) => {
+              const exKey = `muscle-focus::${exercise.name}`;
+              return (
+                <div key={exercise.name} className="relative">
+                  <ExerciseCard
+                    exercise={exercise}
+                    index={i}
+                    exerciseKey={exKey}
+                    checked={checkedExercises.has(exKey)}
+                    onToggle={toggleExercise}
+                  />
+                  <span className="absolute top-4 right-10 text-[10px] text-zinc-600 font-medium hidden sm:block">
+                    {routineLabel}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ================================================================
    NAVIGATION & HOME
    ================================================================ */
 
@@ -2302,6 +2505,13 @@ const navItems: NavItem[] = [
     description: '5-min stretching routines (no bands) for recovery',
     icon: <IconSnow className="w-7 h-7" />,
     color: 'from-teal-500/20 to-teal-600/10 border-teal-500/30 hover:border-teal-400/50',
+  },
+  {
+    id: 'muscle-focus',
+    label: 'Train by Muscle',
+    description: 'Pick a muscle group and get all its exercises with demos in one place',
+    icon: <IconMuscle className="w-7 h-7" />,
+    color: 'from-pink-500/20 to-pink-600/10 border-pink-500/30 hover:border-pink-400/50',
   },
 ];
 
@@ -2479,6 +2689,8 @@ export default function WorkoutApp() {
         return <FullWorkoutPanel workout={fullWorkout1} />;
       case 'full-workout-2':
         return <FullWorkoutPanel workout={fullWorkout2} />;
+      case 'muscle-focus':
+        return <MuscleFocusPage />;
     }
   };
 
@@ -2510,10 +2722,11 @@ export default function WorkoutApp() {
 
           {view === 'home' && (
             <nav className="hidden md:flex items-center gap-1">
-              {(['split', 'pushpull', 'pre-workout', 'post-workout'] as View[]).map((v) => {
+              {(['split', 'pushpull', 'muscle-focus', 'pre-workout', 'post-workout'] as View[]).map((v) => {
                 const labels: Record<string, string> = {
                   split: 'Split',
                   pushpull: 'Push/Pull',
+                  'muscle-focus': 'By Muscle',
                   'pre-workout': 'Pre-WO',
                   'post-workout': 'Post-WO',
                 };
@@ -2549,6 +2762,7 @@ export default function WorkoutApp() {
           <div className="flex justify-center gap-4 mt-3">
             <button onClick={() => navigate('split')} className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">Split</button>
             <button onClick={() => navigate('pushpull')} className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">Push/Pull</button>
+            <button onClick={() => navigate('muscle-focus')} className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">By Muscle</button>
             <button onClick={() => navigate('full-workout-1')} className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">Workout 1</button>
             <button onClick={() => navigate('full-workout-2')} className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">Workout 2</button>
             <button onClick={() => navigate('pre-workout')} className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer">Pre-WO</button>
@@ -2560,10 +2774,11 @@ export default function WorkoutApp() {
       {/* Mobile Bottom Nav */}
       {view === 'home' && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-800/60 safe-area-bottom">
-          <div className="grid grid-cols-4 gap-0">
+          <div className="grid grid-cols-5 gap-0">
             {([
               { v: 'split' as View, label: 'Split', icon: <IconDumbbell className="w-5 h-5" /> },
               { v: 'pushpull' as View, label: 'Push/Pull', icon: <IconSwap className="w-5 h-5" /> },
+              { v: 'muscle-focus' as View, label: 'Muscle', icon: <IconMuscle className="w-5 h-5" /> },
               { v: 'pre-workout' as View, label: 'Pre-WO', icon: <IconFire className="w-5 h-5" /> },
               { v: 'post-workout' as View, label: 'Post-WO', icon: <IconSnow className="w-5 h-5" /> },
             ]).map((item) => (
