@@ -2493,20 +2493,6 @@ const navItems: NavItem[] = [
     color: 'from-emerald-500/20 to-emerald-600/10 border-emerald-500/30 hover:border-emerald-400/50',
   },
   {
-    id: 'pre-workout',
-    label: 'Pre-Workout Routines',
-    description: '5-min activation routines (no bands) tailored to each day',
-    icon: <IconFire className="w-7 h-7" />,
-    color: 'from-rose-500/20 to-rose-600/10 border-rose-500/30 hover:border-rose-400/50',
-  },
-  {
-    id: 'post-workout',
-    label: 'Post-Workout Routines',
-    description: '5-min stretching routines (no bands) for recovery',
-    icon: <IconSnow className="w-7 h-7" />,
-    color: 'from-teal-500/20 to-teal-600/10 border-teal-500/30 hover:border-teal-400/50',
-  },
-  {
     id: 'muscle-focus',
     label: 'Train by Muscle',
     description: 'Pick a muscle group and get all its exercises with demos in one place',
